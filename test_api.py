@@ -12,7 +12,7 @@ def get_employee_payload(name):
     }
 
 
-name_position = 130000
+name_position = 1
 request_times = list()
 
 # API_URL = "https://test-performance-api.herokuapp.com"
@@ -23,13 +23,6 @@ def employee_create_url(params):
     return (
         f"{API_URL}/employees/",
         f"{API_URL}/employees/{params['name']}/",
-    )
-
-
-def employee_get_url(params):
-    return (
-        f"{API_URL}/v1/channel-products/{params['name']}/",
-        None
     )
 
 
@@ -48,7 +41,13 @@ def async_call(model, url_method, http_method, payload_method, channel_slug):
     )  # tasks to do
     loop.run_until_complete(future)  # loop until done
 
-    print('Async {} {} time={:.03f} seconds'.format(model, http_method.upper(), monotonic() - start_time))
+    print(
+        'Async {} {} time={:.03f} seconds'.format(
+            model,
+            http_method.upper(),
+            monotonic() - start_time
+        )
+    )
 
 
 async def create_call_async(url_method, http_method, payload_method, params):
@@ -58,12 +57,15 @@ async def create_call_async(url_method, http_method, payload_method, params):
     global name_position
 
     async with ClientSession(timeout=ClientTimeout(total=0)) as session:
-        for name in range(name_position, name_position + 1000):
+        for name in range(name_position, name_position + 100):
             params["name"] = name
             urls = url_method(params)
             data = payload_method(name) if payload_method else {}
 
-            task = asyncio.ensure_future(create_request_async(data, http_method, session, urls))
+            task = asyncio.ensure_future(
+                create_request_async(
+                    data, http_method, session, urls)
+            )
             tasks.append(task)  # create list of tasks
         _ = await asyncio.gather(*tasks)  # gather task responses
 
@@ -90,7 +92,6 @@ async def create_request_async(data, http_method, session, urls):
     has_deleted = False
 
     for method_test, expected_status_code, url in methods_test:
-        print(method_test)
         method = getattr(session, method_test)
 
         if method_test == "patch":
@@ -103,10 +104,12 @@ async def create_request_async(data, http_method, session, urls):
             request_times.append(monotonic() - start)
 
             if response.status != expected_status_code:
-                breakpoint()
-                print("Response status={}, method={}, error={} request data={}".format(
-                    response.status, method_test, resp, data
-                ))
+                print(
+                    "Response status={}, method={}, "
+                    "error={} request data={}".format(
+                        response.status, method_test, resp, data
+                    )
+                )
 
             if method_test == "delete":
                 has_deleted = True
@@ -116,8 +119,8 @@ async def create_request_async(data, http_method, session, urls):
                 if response_json["city"] != data["city"]:
                     breakpoint()
                     print(
-                        f"Invalid city={response_json['city']}, expected={data['city']} "
-                        "for name={data['name']}"
+                        f"Invalid city={response_json['city']}, "
+                        "expected={data['city']} for name={data['name']}"
                     )
 
 
