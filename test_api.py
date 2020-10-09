@@ -1,4 +1,5 @@
 import asyncio
+from decouple import config
 from time import monotonic
 
 from aiohttp import ClientSession, ClientTimeout
@@ -15,8 +16,7 @@ def get_employee_payload(name):
 name_position = 1
 request_times = list()
 
-# API_URL = "https://test-performance-api.herokuapp.com"
-API_URL = "http://localhost:8000"
+API_URL = config("API_URL")
 
 
 def employee_create_url(params):
