@@ -13,7 +13,6 @@ def get_employee_payload(name):
     }
 
 
-name_position = 1
 request_times = list()
 
 API_URL = config("API_URL")
@@ -54,7 +53,7 @@ async def create_call_async(url_method, http_method, payload_method, params):
     """Launch requests for all web pages."""
     tasks = []
 
-    global name_position
+    name_position = 0
 
     async with ClientSession(timeout=ClientTimeout(total=0)) as session:
         for name in range(name_position, name_position + 100):
