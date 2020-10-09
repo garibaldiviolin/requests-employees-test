@@ -124,27 +124,16 @@ async def create_request_async(data, http_method, session, urls):
                     )
 
 
-channel_slugs = [
-    "amazon",
-    # "madeiramadeira",
-    # "zoom",
-    # "luanet",
-    # "saraiva",
-    # "carrefour"
-]
-
 start = monotonic()
 
-for channel_slug in channel_slugs:
-    params = {}
-    async_call(
-        "Employees",
-        employee_create_url,
-        "post",
-        get_employee_payload,
-        params,
-    )
-
+params = {}
+async_call(
+    "Employees",
+    employee_create_url,
+    "post",
+    get_employee_payload,
+    params,
+)
 
 end = monotonic()
 
