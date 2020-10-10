@@ -6,6 +6,7 @@ from aiohttp import ClientSession, ClientTimeout
 
 
 def get_employee_payload(name):
+    """Builds the employee payload based on the name informed."""
     return {
         "name": str(name),
         "age": 42,
