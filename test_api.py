@@ -19,6 +19,8 @@ def get_employee_payload(name):
 
 
 def get_employee_urls(params):
+    """Builds the API URLs for GET/POST/PUT/PATCH/DELETE HTTP methods.
+    """
     return (
         f"{API_URL}/employees/",
         f"{API_URL}/employees/{params['name']}/",
