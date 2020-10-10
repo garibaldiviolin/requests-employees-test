@@ -4,6 +4,10 @@ from time import monotonic
 
 from aiohttp import ClientSession, ClientTimeout
 
+request_times = list()
+
+API_URL = config("API_URL")
+
 
 def get_employee_payload(name):
     """Builds the employee payload based on the name informed."""
@@ -12,11 +16,6 @@ def get_employee_payload(name):
         "age": 42,
         "city": "Tokyo"
     }
-
-
-request_times = list()
-
-API_URL = config("API_URL")
 
 
 def get_employee_urls(params):
