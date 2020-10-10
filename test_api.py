@@ -141,4 +141,11 @@ async_call(
 
 end = monotonic()
 
+for key in request_times.keys():
+    request_times[key].sort()
+    print(
+        f"{key.upper()} Response Times - best={request_times[key][0]:.2f}, "
+        f"worst={request_times[key][-1]:.2f}"
+    )
+
 print("All process time={:.03f} seconds".format(end - start))
