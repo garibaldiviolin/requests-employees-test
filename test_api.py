@@ -19,7 +19,7 @@ request_times = list()
 API_URL = config("API_URL")
 
 
-def employee_create_url(params):
+def get_employee_urls(params):
     return (
         f"{API_URL}/employees/",
         f"{API_URL}/employees/{params['name']}/",
@@ -129,7 +129,7 @@ start = monotonic()
 params = {}
 async_call(
     "Employees",
-    employee_create_url,
+    get_employee_urls,
     "post",
     get_employee_payload,
     params,
