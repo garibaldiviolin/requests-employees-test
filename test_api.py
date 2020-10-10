@@ -100,12 +100,12 @@ async def create_request_async(data, http_method, session, urls):
             del data["name"]
 
         async with method(url, json=data) as response:
-            resp = await response.read()
-            resp = resp
-
             if http_method not in request_times:
                 request_times[http_method] = list()
             request_times[http_method].append(monotonic() - start)
+
+            resp = await response.read()
+            resp = resp
 
             if response.status != expected_status_code:
                 print(
