@@ -4,7 +4,7 @@ from time import monotonic
 
 from aiohttp import ClientSession, ClientTimeout
 
-request_times = list()
+request_times = dict()
 
 API_URL = config("API_URL")
 
@@ -100,7 +100,10 @@ async def create_request_async(data, http_method, session, urls):
         async with method(url, json=data) as response:
             resp = await response.read()
             resp = resp
-            request_times.append(monotonic() - start)
+
+            if http_method not in request_times:
+                request_times[http_method] = list()
+            request_times[http_method].append(monotonic() - start)
 
             if response.status != expected_status_code:
                 print(
